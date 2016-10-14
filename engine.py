@@ -22,10 +22,12 @@ class InferenceEngine(object):
     def __init__(self, ruleset):
         ''' '''
 
-        self.rules = self._parse_rules(ruleset)
+        self.rules = {}
+        self.rules_index = {}
+
+        self._parse_rules(ruleset)
 
     def _parse_rules(self,rulesFile):
-        rules = {}
         for line in rulesFile:
             if not line.rstrip():
                 continue
@@ -40,11 +42,14 @@ class InferenceEngine(object):
             rule = Rule(causes,consecuenses)
 
             for cause in causes:
-                rules_list = rules.get(cause,[])
+                rules_list = self.rules.get(cause,[])
                 rules_list.append(rule)
-                rules[cause] = rules_list
+                self.rules[cause] = rules_list
 
-        return rules
+            for consecuence in consecuenses:
+                rules_list = self.rules_index.get(consecuence,[])
+                rules_list.append(rule)
+                self.rules_index[consecuence] = rules_list
 
     def infer(self,universe):
         queue = []
@@ -68,11 +73,51 @@ class InferenceEngine(object):
 
                     queue.append(new_statement)
 
+    def _updateUniverse(self,universe,statement):
+        if statement in universe:
+            return
+        print("Universe updated with: ",statement)
+        universe.append(statement)
+
+    def prove(self,statement,universe):
+        if statement in universe:
+            return True
+
+        if not statement in self.rules_index:
+            return False
+
+        for rule in self.rules_index[statement]:
+            if rule.is_fullfilled(universe):
+                self._updateUniverse(universe,statement)
+                return True
+
+        for rule in self.rules_index[statement]:
+            causes = rule.get_causes()
+            for cause in causes:
+                if not self.prove(cause,universe):
+                    break
+
+            self._updateUniverse(universe,statement)
+            return True
+
+        return False
+
 def main():
 
     with open("rules.rls") as rule_set:
         engine = InferenceEngine(rule_set)
         universe = ["unFiubense","amargo","peloCorto"]
         engine.infer(universe)
+
+    with open("rules.rls") as rule_set:
+        engine = InferenceEngine(rule_set)
+        universe = ["croaks","eatsFlies"]
+        if engine.prove("green",universe):
+            print("green proved given croaks and eatsFlies")
+
+        universe = ["Burno"]
+        if engine.prove("argentino",universe):
+            print("argentino proved given Burno")
+
 
 main()

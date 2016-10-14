@@ -11,3 +11,8 @@ IF DanielAmego THEN traba
 IF Fede,conquista THEN DanielAmego
 IF unFiubense THEN argentino
 IF unaFiubense THEN argentina
+
+IF croaks,eatsFlies THEN frog
+IF chirps,sings THEN canary
+IF frog THEN green
+IF canary THEN yellow
