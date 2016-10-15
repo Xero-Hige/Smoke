@@ -69,8 +69,7 @@ class InferenceEngine(object):
                         continue
 
                     print("Infered from",rule.get_causes()," -> ",new_statement)
-                    universe.append(new_statement)
-
+                    self._updateUniverse(universe,new_statement)
                     queue.append(new_statement)
 
     def _updateUniverse(self,universe,statement):
