@@ -101,23 +101,3 @@ class InferenceEngine(object):
             return True
 
         return False
-
-def main():
-
-    with open("rules.rls") as rule_set:
-        engine = InferenceEngine(rule_set)
-        universe = ["unFiubense","amargo","peloCorto"]
-        engine.infer(universe)
-
-    with open("rules.rls") as rule_set:
-        engine = InferenceEngine(rule_set)
-        universe = ["croaks","eatsFlies"]
-        if engine.prove("green",universe):
-            print("green proved given croaks and eatsFlies")
-
-        universe = ["Burno"]
-        if engine.prove("argentino",universe):
-            print("argentino proved given Burno")
-
-
-main()
