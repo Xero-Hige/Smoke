@@ -27,7 +27,7 @@ The rules are later stored in the engine, indexed in a hashmap by cause and cons
 
 ### Infer (Forward chaining)
 
-The forward chaining is done iterating over the list of known statements of the universe, and for each one, obtaining the rules that uses that statement as cause. Given the full list of the rules, each one is evaluated looking for some new statements (consequences). If a rule is fulfilled, each of the causes not present in the universe are added to it. In particular, they are added to the end of the list to guarantee that the rules related to the new statement are evaluated.
+The forward chaining is done iterating over the list of known statements of the universe, and for each one, obtaining the rules that uses that statement as cause. Given the full list of the rules, each one is evaluated looking for some new statements (consequences). If a rule is fulfilled, each of the consecuenses not present in the universe are added to it. In particular, they are added to the end of the list to guarantee that the rules related to the new statement are evaluated.
 
 ### Prove (Backward chaining)
 
